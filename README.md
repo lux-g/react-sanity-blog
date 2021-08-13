@@ -8,4 +8,4 @@ front end built with React
 - localstorage
 
 backend 
-- CMS - sanity.io 
+- CMS - sanity
