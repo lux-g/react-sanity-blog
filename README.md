@@ -7,4 +7,5 @@ front end built with React
 - layz, suspense
 - localstorage
 
-backend - sanity cms
+backend 
+- sanity cms
