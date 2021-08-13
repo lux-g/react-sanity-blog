@@ -1,3 +1,3 @@
-# Blog 
-# front end built with React
-# backend - sanity cms
+# Blog SIte
+front end built with React
+backend - sanity cms
