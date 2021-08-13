@@ -1,24 +1,55 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import OnePost from './components/OnePost';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import styled, { ThemeProvider } from 'styled-components'
+import { lightTheme, darkTheme, GlobalStyles } from './components/themes'
+import { lazy, Suspense, useState, useEffect } from 'react';
+const AllPosts = lazy(() => import('./components/AllPosts'))
+
+const StyledApp = styled.div``;
+
 
 function App() {
+
+  const [theme, setTheme] = useState('light')
+
+  const themeToggler = () => {
+    theme === 'light' ? setTheme('dark') : setTheme('light')
+  }
+
+  //LOCAL STORAGE
+  useEffect(()=> {
+    const data = localStorage.getItem('darkMode')
+    if(data){
+      setTheme(JSON.parse(data))
+    }
+  }, [])
+
+  //LOCAL STORAGE
+  useEffect(()=> {
+    localStorage.setItem('darkMode', JSON.stringify(theme))
+  })
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme === "light" ? lightTheme: darkTheme}>
+    <GlobalStyles/>
+      <StyledApp>
+        <div className="main-container">
+            <Suspense fallback={<div className="loading">Loading...</div>}>
+              <Router>
+                <Header themeToggler={themeToggler} theme={theme}/>
+                  <div className="App">
+                    <Route path="/" exact component={AllPosts}/>
+                    <Route path="/:slug" exact component={OnePost}/>
+                  </div>
+                <Footer/>
+              </Router>
+            </Suspense>
+          </div>
+      </StyledApp>
+    </ThemeProvider>
   );
 }
 
